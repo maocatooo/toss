@@ -1,0 +1,26 @@
+# Compiled object files, static libraries, and executables
+*.o
+*.a
+*.exe
+
+# Dependency directories
+vendor/
+
+# Generated files
+logs/
+*.log
+
+# Go-specific files
+*.test
+*.prof
+*.out
+build/
+
+# OS-specific files
+.DS_Store
+
+.env
+
+output/
+
+.idea

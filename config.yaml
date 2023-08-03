@@ -1,0 +1,7 @@
+AK: AKIAIOSFODNN7EXAMPLE
+SK: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+region: cn-hangzhou
+bucket: test123
+endpoint: http://127.0.0.1:9000
+source: ../toss
+target: /toss
