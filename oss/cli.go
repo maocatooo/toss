@@ -14,7 +14,6 @@ import (
 
 func exitErrorf(msg string, args ...interface{}) {
 	fmt.Fprintf(os.Stderr, msg+"", args...)
-	os.Exit(1)
 }
 
 type Client struct {
@@ -57,7 +56,7 @@ func (c *Client) buckets() ([]*s3.Bucket, error) {
 func (c *Client) getFileAndFolder(bucket string, prefix string) ([]*s3.Object, error) {
 	svc := s3.New(c.sess)
 	params := &s3.ListObjectsInput{
-		Bucket: aws.String(fmt.Sprint("/", bucket)),
+		Bucket: aws.String(fmt.Sprint(bucket)),
 		Prefix: aws.String(prefix),
 	}
 	resp, err := svc.ListObjects(params)
@@ -94,7 +93,7 @@ func getFile(sess *session.Session, bucket, item string) {
 
 func (c *Client) delete(bucket string, filename string) (*s3.DeleteObjectOutput, error) {
 	svc := s3.New(c.sess)
-	res, err := svc.DeleteObject(&s3.DeleteObjectInput{Bucket: aws.String(fmt.Sprint("/", bucket)), Key: aws.String(filename)})
+	res, err := svc.DeleteObject(&s3.DeleteObjectInput{Bucket: aws.String(fmt.Sprint(bucket)), Key: aws.String(filename)})
 	if err != nil {
 		exitErrorf("Unable to delete object %q from bucket %q, %v", filename, bucket, err)
 		return nil, err
@@ -124,7 +123,7 @@ func (c *Client) upload(bucket string, filename string, fileData []byte) (*s3man
 
 	uploader := s3manager.NewUploader(c.sess)
 	output, err := uploader.Upload(&s3manager.UploadInput{
-		Bucket: aws.String(fmt.Sprint("/", bucket)),
+		Bucket: aws.String(fmt.Sprint(bucket)),
 		Key:    aws.String(filename),
 		Body:   bytes.NewReader(fileData),
 	})

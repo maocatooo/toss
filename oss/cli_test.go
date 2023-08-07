@@ -9,6 +9,7 @@ import (
 
 var testConfig = struct {
 	Tencent Config `yaml:"tencent"`
+	Ali     Config `yaml:"ali"`
 	Minio   Config `yaml:"minio"`
 }{}
 
@@ -37,7 +38,7 @@ func TestNewClient_buckets(t *testing.T) {
 }
 
 func TestNewClient_uploadFile(t *testing.T) {
-	res, err := NewClient(testConfig.Minio).upload("test123", "1231/123", []byte("123333333"))
+	res, err := NewClient(testConfig.Minio).upload(testConfig.Minio.Bucket, "1231/123", []byte("123333333"))
 	if err != nil {
 		t.Error(err)
 		return
@@ -47,7 +48,7 @@ func TestNewClient_uploadFile(t *testing.T) {
 
 func TestNewClient_get_file_and_folder(t *testing.T) {
 	{
-		res, err := NewClient(testConfig.Minio).getFileAndFolder("test123", "")
+		res, err := NewClient(testConfig.Minio).getFileAndFolder(testConfig.Minio.Bucket, "")
 		if err != nil {
 			t.Error(err)
 			return
@@ -62,7 +63,7 @@ func TestNewClient_get_file_and_folder(t *testing.T) {
 	}
 	{
 		//search the prefix eq "123"
-		res, err := NewClient(testConfig.Minio).getFileAndFolder("test123", "123")
+		res, err := NewClient(testConfig.Minio).getFileAndFolder(testConfig.Minio.Bucket, "1231")
 		if err != nil {
 			t.Error(err)
 			return
@@ -78,7 +79,7 @@ func TestNewClient_get_file_and_folder(t *testing.T) {
 }
 
 func TestNewClient_delete(t *testing.T) {
-	res, err := NewClient(testConfig.Minio).delete("test123", "1231/123")
+	res, err := NewClient(testConfig.Minio).delete(testConfig.Minio.Bucket, "1231/123")
 	if err != nil {
 		t.Error(err)
 		return
@@ -87,10 +88,71 @@ func TestNewClient_delete(t *testing.T) {
 }
 
 func TestNewClient_deleteOnPrefix(t *testing.T) {
-	err := NewClient(testConfig.Minio).deleteOnPrefix("test123", "")
+	err := NewClient(testConfig.Minio).deleteOnPrefix(testConfig.Minio.Bucket, "")
 	if err != nil {
 		t.Error(err)
 		return
+	}
+}
+
+func TestNewClient_buckets_ali(t *testing.T) {
+	bs, err := NewClient(testConfig.Ali).buckets()
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	for _, item := range bs {
+		t.Log(item)
+	}
+}
+
+func TestNewClient_uploadFile_ali(t *testing.T) {
+	res, err := NewClient(testConfig.Ali).upload(testConfig.Ali.Bucket, "/1231/123.txt", []byte("123333333"))
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	t.Log(res)
+}
+
+func TestNewClient_delete_ali(t *testing.T) {
+	res, err := NewClient(testConfig.Ali).delete(testConfig.Ali.Bucket, "/1231/123.txt")
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	t.Log(res)
+}
+
+func TestNewClient_get_file_and_folder_ali(t *testing.T) {
+	{
+		res, err := NewClient(testConfig.Ali).getFileAndFolder(testConfig.Ali.Bucket, "")
+		if err != nil {
+			t.Error(err)
+			return
+		}
+		for _, item := range res {
+			fmt.Println("Name:         ", *item.Key)
+			fmt.Println("Last modified:", *item.LastModified)
+			fmt.Println("Size:         ", *item.Size)
+			fmt.Println("Storage class:", *item.StorageClass)
+			fmt.Println("")
+		}
+	}
+	{
+		//search the prefix eq "123"
+		res, err := NewClient(testConfig.Ali).getFileAndFolder(testConfig.Ali.Bucket, "1231")
+		if err != nil {
+			t.Error(err)
+			return
+		}
+		for _, item := range res {
+			fmt.Println("Name:         ", *item.Key)
+			fmt.Println("Last modified:", *item.LastModified)
+			fmt.Println("Size:         ", *item.Size)
+			fmt.Println("Storage class:", *item.StorageClass)
+			fmt.Println("")
+		}
 	}
 }
 
@@ -107,7 +169,7 @@ func TestNewClient_buckets_tencent(t *testing.T) {
 
 func TestNewClient_get_file_and_folder_tencent(t *testing.T) {
 	{
-		res, err := NewClient(testConfig.Tencent).getFileAndFolder("/", "")
+		res, err := NewClient(testConfig.Tencent).getFileAndFolder(testConfig.Tencent.Bucket, "")
 		if err != nil {
 			t.Error(err)
 			return
@@ -122,7 +184,7 @@ func TestNewClient_get_file_and_folder_tencent(t *testing.T) {
 	}
 	{
 		//search the prefix eq "123"
-		res, err := NewClient(testConfig.Tencent).getFileAndFolder("", "123")
+		res, err := NewClient(testConfig.Tencent).getFileAndFolder(testConfig.Tencent.Bucket, "123")
 		if err != nil {
 			t.Error(err)
 			return
@@ -138,7 +200,7 @@ func TestNewClient_get_file_and_folder_tencent(t *testing.T) {
 }
 
 func TestNewClient_uploadFile_tencent(t *testing.T) {
-	res, err := NewClient(testConfig.Tencent).upload("", "/1231/123.txt", []byte("123333333"))
+	res, err := NewClient(testConfig.Tencent).upload(testConfig.Tencent.Bucket, "/1231/123.txt", []byte("123333333"))
 	if err != nil {
 		t.Error(err)
 		return
@@ -147,7 +209,7 @@ func TestNewClient_uploadFile_tencent(t *testing.T) {
 }
 
 func TestNewClient_deleteOnPrefix_tencent(t *testing.T) {
-	err := NewClient(testConfig.Tencent).deleteOnPrefix("", "/1231")
+	err := NewClient(testConfig.Tencent).deleteOnPrefix(testConfig.Tencent.Bucket, "/1231")
 	if err != nil {
 		t.Error(err)
 		return

@@ -1,16 +1,24 @@
 tencent:
-  AK: AKIDKafcXIqBLQLLj3MdlfO4f3DnPfovjcVH
-  SK: pg4RwLZqxut5GWdXFnImF2f6LVTJHHIG
-  region: cn-hangzhou
-  bucket:
+  AK: AKIAIOSFODNN7EXAMPLE
+  SK: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+  region: ap-nanjing
+  bucket: /
   endpoint: https://maocat-1309234433.cos.ap-nanjing.myqcloud.com
   source: ../oss
-  target: /
+  target: /oss
 minio:
   AK: AKIAIOSFODNN7EXAMPLE
   SK: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
   region: cn-hangzhou
-  bucket: test123
+  bucket: /test123
   endpoint: http://127.0.0.1:9000
-  source: ../../toss
+  source: ../oss
+  target: /oss
+ali:
+  AK: AKIAIOSFODNN7EXAMPLE
+  SK: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+  region: oss-cn-beijing
+  bucket: maocat
+  endpoint: https://oss-cn-beijing.aliyuncs.com
+  source: ../oss
   target: /oss
