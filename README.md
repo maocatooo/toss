@@ -7,7 +7,7 @@
 
 - [x] MinIO
 - [x] tencentOSS
-- [ ] aliOSS
+- [x] aliOSS
 - [ ] qiniuOSS
 - [ ] awsOSS
 
@@ -33,26 +33,39 @@ toss --config config_path/config.yaml
 ### 配置文件
 
 #### MinIO
+**bucket 前面要加 /**
 ```yaml
 AK: AKIAIOSFODNN7EXAMPLE // 必填
 SK: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY // 必填
 region: cn-hangzhou // MinIO可选
-bucket: test123  // bucket名称必填
+bucket: /test123  // bucket名称必填
 endpoint: http://127.0.0.1:9000 // 必填
 source: ../toss // 本地文件/文件夹路径 必填
 target: /toss  //目标oss文件夹路径 必填 
 ```
 
 #### tencentOSS
-bucket 名称已经在endpoint中包含, 无需再次填写
+**bucket 名称已经在endpoint中包含, 固定为 /**
 
-region: 云对象存储地域 必填
+**region: 云对象存储地域endpoint中包含 必填**
+
 ```yaml
-AK: AKIDKafcXIqBLQLLj3MdlfO4f3DnPfovjcVH
-SK: pg4RwLZqxut5GWdXFnImF2f6LVTJHHIG
+AK: AKIAIOSFODNN7EXAMPLE
+SK: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
 region: cn-hangzhou
-bucket:
+bucket: /
 endpoint: https://maocat-1309234433.cos.ap-nanjing.myqcloud.com
+source: ../oss
+target: /
+```
+#### aliOSS
+
+```yaml
+AK: AKIAIOSFODNN7EXAMPLE
+SK: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+region: oss-cn-beijing
+bucket: maocat
+endpoint: https://oss-cn-beijing.aliyuncs.com
 source: ../oss
 target: /
 ```
