@@ -22,3 +22,11 @@ ali:
   endpoint: https://oss-cn-beijing.aliyuncs.com
   source: ../oss
   target: /oss
+aws:
+  AK: AKIAIOSFODNN7EXAMPLE
+  SK: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+  region: oss-cn-beijing
+  bucket: maocat
+  endpoint:
+  source: ../oss
+  target: oss

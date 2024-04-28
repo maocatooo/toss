@@ -11,6 +11,7 @@ var testConfig = struct {
 	Tencent Config `yaml:"tencent"`
 	Ali     Config `yaml:"ali"`
 	Minio   Config `yaml:"minio"`
+	AWS     Config `yaml:"aws"`
 }{}
 
 func TestMain(t *testing.M) {
@@ -210,6 +211,55 @@ func TestNewClient_uploadFile_tencent(t *testing.T) {
 
 func TestNewClient_deleteOnPrefix_tencent(t *testing.T) {
 	err := NewClient(testConfig.Tencent).deleteOnPrefix(testConfig.Tencent.Bucket, "/1231")
+	if err != nil {
+		t.Error(err)
+		return
+	}
+}
+
+func TestNewClient_get_file_and_folder_aws(t *testing.T) {
+	{
+		res, err := NewClient(testConfig.AWS).getFileAndFolder(testConfig.AWS.Bucket, "")
+		if err != nil {
+			t.Error(err)
+			return
+		}
+		for _, item := range res {
+			fmt.Println("Name:         ", *item.Key)
+			fmt.Println("Last modified:", *item.LastModified)
+			fmt.Println("Size:         ", *item.Size)
+			fmt.Println("Storage class:", *item.StorageClass)
+			fmt.Println("")
+		}
+	}
+	{
+		//search the prefix eq "123"
+		res, err := NewClient(testConfig.AWS).getFileAndFolder(testConfig.AWS.Bucket, "1231")
+		if err != nil {
+			t.Error(err)
+			return
+		}
+		for _, item := range res {
+			fmt.Println("Name:         ", *item.Key)
+			fmt.Println("Last modified:", *item.LastModified)
+			fmt.Println("Size:         ", *item.Size)
+			fmt.Println("Storage class:", *item.StorageClass)
+			fmt.Println("")
+		}
+	}
+}
+
+func TestNewClient_uploadFile_aws(t *testing.T) {
+	res, err := NewClient(testConfig.AWS).upload(testConfig.AWS.Bucket, "/1231/123.txt", []byte("123333333"))
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	t.Log(res)
+}
+
+func TestNewClient_deleteOnPrefix_aws(t *testing.T) {
+	err := NewClient(testConfig.AWS).deleteOnPrefix(testConfig.AWS.Bucket, "/1231")
 	if err != nil {
 		t.Error(err)
 		return

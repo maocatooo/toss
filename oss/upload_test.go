@@ -12,3 +12,7 @@ func TestUpload_Tencent(t *testing.T) {
 func TestUpload_Ali(t *testing.T) {
 	Upload(testConfig.Ali)
 }
+
+func TestUpload_AWS(t *testing.T) {
+	Upload(testConfig.AWS)
+}

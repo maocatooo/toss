@@ -9,7 +9,7 @@
 - [x] tencentOSS
 - [x] aliOSS
 - [ ] qiniuOSS
-- [ ] awsOSS
+- [x] awsOSS
 
 ### 安装
 
@@ -66,6 +66,20 @@ SK: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
 region: oss-cn-beijing
 bucket: maocat
 endpoint: https://oss-cn-beijing.aliyuncs.com
+source: ../oss
+target: /
+```
+
+#### aws
+**bucket 必须
+**endpoint 非必须
+**region: 必须
+```yaml
+AK: AKIAIOSFODNN7EXAMPLE
+SK: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+region: oss-cn-beijing
+bucket: maocat
+endpoint: 
 source: ../oss
 target: /
 ```
